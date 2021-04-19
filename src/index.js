@@ -1,23 +1,20 @@
 import "../styles.css";
-import GenericTooltip from "./genericTooltip";
-import AwesomeTooltip from "./awesomeTooltip";
-import BestTooltipEver from "./bestTooltipEver";
 
 const data = [
   {
     id: 1,
     title: "Accordion #1",
-    content: GenericTooltip(),
+    getContent: async() => import('./genericTooltip'),
   },
   {
     id: 2,
     title: "Accordion #2",
-    content: AwesomeTooltip(),
+    getContent: async () => import('./awesomeTooltip'),
   },
   {
     id: 3,
     title: "Accordion #3",
-    content: BestTooltipEver(),
+    getContent: async () => import('./bestTooltipEver'),
   },
 ];
 
@@ -47,14 +44,15 @@ for (let d of data) {
 const attachHandlers = () => {
   const accordions = document.querySelectorAll(".accordion .title");
   accordions.forEach((accordion) => {
-    accordion.onclick = () => {
+    accordion.onclick = async () => {
       accordion.classList.toggle("active");
       let content = accordion.nextElementSibling;
       if (!content || !content.classList.contains("content")) {
         const accordionText = accordion.innerText;
-        const accordionContent = data.find((d) => d.title === accordionText)
-          .content;
-        content = renderContent(accordionContent);
+        const accordionContent = await data
+            .find((d) => d.title === accordionText)
+            .getContent();
+        content = renderContent(accordionContent.default());
 
         accordion.after(content);
       }
