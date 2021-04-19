@@ -1,11 +1,9 @@
-import { divide } from "lodash"
-
 export default () => {
     const tooltip = document.createElement('div')
     tooltip.className = 'tooltip'
     tooltip.innerHTML = `
-        Hover over me
-        <span class="tooltiptext">Tooltip text</span>
+        Mouse over me
+        <span class="tooltiptext">This is tooltip 2</span>
     `
     return tooltip
 }
