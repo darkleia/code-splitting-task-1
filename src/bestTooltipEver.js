@@ -1,18 +1,3 @@
-export default () => {
-  const tooltip = document.createElement('div');
+import { tooltipFactory } from './helper';
 
-  tooltip.className = 'tooltip';
-  tooltip.innerHTML = 'Mouse over me';
-  tooltip.onmouseenter = () => {
-    import('./bestTooltipEverContent').then(({ default: c }) => {
-      const o = document.createElement('span');
-      
-      o.classList.add('tooltiptext');
-      o.innerText = c;
-
-      tooltip.appendChild(o);
-    });
-  };
-
-  return tooltip;
-};
+export default () => tooltipFactory('Mouse over me', () => import('./bestTooltipEverContent'));

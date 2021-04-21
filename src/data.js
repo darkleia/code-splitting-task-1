@@ -1,4 +1,4 @@
-const a = ({default: f}) => f();
+const a = ({ default: f }) => f();
 
 export default [
   {
