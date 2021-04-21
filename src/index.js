@@ -26,22 +26,20 @@ for (let d of data) {
 
 const attachHandlers = () => {
   const accordions = document.querySelectorAll('.accordion .title');
-  accordions.forEach((accordion) => {
+
+  accordions.forEach((accordion, index) => {
     accordion.onclick = () => {
       accordion.classList.toggle('active');
       let content = accordion.nextElementSibling;
       if (!content || !content.classList.contains('content')) {
         const accordionText = accordion.innerText;
 
-        data
-          .find((d) => d.title === accordionText)
-          .content()
-          .then((accordionContent) => {
-            content = renderContent(accordionContent);
-            content.classList.add('is-open');
+        data[index].content().then((accordionContent) => {
+          content = renderContent(accordionContent);
+          content.classList.add('is-open');
 
-            accordion.after(content);
-          });
+          accordion.after(content);
+        });
       } else {
         content.classList.toggle('is-open');
       }
