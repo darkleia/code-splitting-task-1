@@ -1,41 +1,21 @@
-import "../styles.css"
-import GenericTooltip from './genericTooltip'
-import AwesomeTooltip from './awesomeTooltip'
-import BestTooltipEver from './bestTooltipEver'
+import '../styles.css';
+import data from './data';
 
-const data = [
-  {
-    id: 1,
-    title: "Accordion #1",
-    content: GenericTooltip()
-  },
-  {
-    id: 2,
-    title: "Accordion #2",
-    content: AwesomeTooltip()
-    },
-  {
-    id: 3,
-    title: "Accordion #3",
-    content: BestTooltipEver()
-  }
-];
+const accordion = document.createElement('section');
+accordion.classList.add('accordion');
 
-const accordion = document.createElement("section");
-accordion.classList.add("accordion");
-
-const renderTitle = text => {
-  const title = document.createElement("div");
-  title.classList.add("title");
+const renderTitle = (text) => {
+  const title = document.createElement('div');
+  title.classList.add('title');
   title.innerText = text;
 
   return title;
 };
 
-const renderContent = details => {
-  const content = document.createElement("div");
-  content.classList.add("content");
-  content.appendChild(details)
+const renderContent = (details) => {
+  const content = document.createElement('div');
+  content.classList.add('content');
+  content.appendChild(details);
 
   return content;
 };
@@ -45,20 +25,24 @@ for (let d of data) {
 }
 
 const attachHandlers = () => {
-  const accordions = document.querySelectorAll(".accordion .title");
-  accordions.forEach(accordion => {
+  const accordions = document.querySelectorAll('.accordion .title');
+
+  accordions.forEach((accordion, index) => {
     accordion.onclick = () => {
-      accordion.classList.toggle("active");
+      accordion.classList.toggle('active');
       let content = accordion.nextElementSibling;
       if (!content || !content.classList.contains('content')) {
-          const accordionText = accordion.innerText;
-          const accordionContent = data.find(d => d.title === accordionText).content
-          content = renderContent(accordionContent)
+        const accordionText = accordion.innerText;
+
+        data[index].content().then((accordionContent) => {
+          content = renderContent(accordionContent);
+          content.classList.add('is-open');
 
           accordion.after(content);
-
+        });
+      } else {
+        content.classList.toggle('is-open');
       }
-      content.classList.toggle("is-open");
     };
   });
 };
